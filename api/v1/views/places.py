@@ -58,7 +58,7 @@ def places_create(city_id):
     if props.get("name") is None:
         return "Missing name", 400
     props["city_id"] = city_id
-    new_place = Place(**data)
+    new_place = Place(**props)
     new_place.save()
     return jsonify(new_place.to_dict()), 201
 
