@@ -79,7 +79,8 @@ def review_update(review_id):
     if props is None:
         return "Not a JSON", 400
     for key, value in props.items():
-        if key not in ["id", "user_id", "place_id", "created_at", "updated_at"]:
+        if key not in ["id", "user_id", "place_id",
+                       "created_at", "updated_at"]:
             setattr(review, key, value)
     storage.save()
     return jsonify(review.to_dict()), 200
