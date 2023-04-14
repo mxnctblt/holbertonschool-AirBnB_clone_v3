@@ -61,10 +61,8 @@ def places_create(city_id):
     name = props.get("name")
     if "name" not in props:
         abort(400, "Missing name")
-    new_place = Place()
-    new_place.city_id = city_id
-    for key, value in data.items():
-        setattr(new_place, key, value)
+    props['city_id'] = city_id
+    new_place = Place(**props)
     new_place.save()
     return (jsonify(new_place.to_dict()), 201)
 
