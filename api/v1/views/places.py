@@ -72,7 +72,7 @@ def places_create(city_id):
 @app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
 def places_update(place_id):
     """ Updates a Place object """
-    place = place.get(Place, place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
     props = request.get_json()
