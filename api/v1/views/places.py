@@ -7,6 +7,7 @@ from models import storage
 from models.place import Place
 from models.city import City
 from models.user import User
+from models.amenity import Amenity
 
 
 @app_views.route("/cities/<city_id>/places", methods=["GET"],
@@ -50,18 +51,22 @@ def places_create(city_id):
         abort(404)
     props = request.get_json()
     if props is None:
-        return "Not a JSON", 400
-    if props.get("user_id") is None:
-        return "Missing user_id", 400
+        abort(400, "Not a JSON")
+    user_id = props.get("user_id")
+    if "user_id" not in props:
+        abort(400, "Missing user_id")
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
-    if props.get("name") is None:
-        return "Missing name", 400
-    props["city_id"] = city_id
-    new_place = Place(**props)
+    name = props.get("name")
+    if "name" not in props:
+        abort(400, "Missing name")
+    new_place = Place()
+    new_place.city_id = city_id
+    for key, value in data.items():
+        setattr(new_place, key, value)
     new_place.save()
-    return jsonify(new_place.to_dict()), 201
+    return (jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
