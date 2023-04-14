@@ -38,7 +38,7 @@ def amenity_delete(amenity_id):
 
 @app_views.route("/amenities", methods=["POST"],
                  strict_slashes=False)
-def amenity_create(amenity_id):
+def amenity_create():
     """ Creates a Amenity """
     props = request.get_json()
     if props is None:
