@@ -3,7 +3,6 @@
 all default RESTFul API actions """
 from flask import jsonify, abort, request
 from api.v1.views import app_views
-from flasgger import swag_from
 from models import storage
 from models.place import Place
 
@@ -15,7 +14,10 @@ def places_by_city(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-    return jsonify([p.to_dict() for p in city.places])
+    places = storage.all('Place')
+    city_places = [obj.to_json() for obj in all_places.values()
+                   if obj.city_id == city_id]
+    return jsonify(city_places)
 
 
 @app_views.route("/places/<place_id>", methods=["GET"],
