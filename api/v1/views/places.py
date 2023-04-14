@@ -53,7 +53,7 @@ def places_create(city_id):
         return "Not a JSON", 400
     if props.get("user_id") is None:
         return "Missing user_id", 400
-    user = storage.get("User", user_id)
+    user = storage.get(User, user_id)
     if user is None:
         abort(404)
     if props.get("name") is None:
