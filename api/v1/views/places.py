@@ -11,13 +11,11 @@ from models.place import Place
                  strict_slashes=False)
 def places_by_city(city_id):
     """ Retrieves the list of all Place objects of a City """
-    city = storage.get(City, city_id)
-    if city is None:
-        abort(404)
-    places = storage.all('Place')
-    city_places = [obj.to_json() for obj in all_places.values()
-                   if obj.city_id == city_id]
-    return jsonify(city_places)
+    place = []
+    city = storage.get("City", str(city_id))
+    for obj in city.places:
+        place.append(obj.to_json())
+    return jsonify(place)
 
 
 @app_views.route("/places/<place_id>", methods=["GET"],
